@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setFilter } from 'redux/filter/slice';
-import { getFilter } from 'redux/filter/selectors';
+import { setQueryFilter } from 'redux/filterSlice';
+import { selectFilter } from 'redux/selectors';
 
 export default function Filter() {
-  const filter = useSelector(getFilter);
+  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   const onChange = ({ target }) => {
-    dispatch(setFilter(target.value));
+    dispatch(setQueryFilter(target.value));
   };
 
   return (

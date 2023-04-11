@@ -1,20 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteContactAction } from 'redux/contacts/slice';
+import { deleteContact } from 'redux/operations';
 import { useSelector } from 'react-redux';
 
-import { getContacts, getFilteredContacts } from 'redux/contacts/selectors';
-import { getFilter } from 'redux/filter/selectors';
+import { selectVisibleContacts } from 'redux/selectors';
 
 export default function ContactList() {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
-  const listedContacts = getFilteredContacts(contacts, filter);
+  const visibleContacts = useSelector(selectVisibleContacts);
+
   return (
     <ul className="list">
-      {listedContacts.map(({ id, name, number }) => {
+      {visibleContacts.map(({ id, name, number }) => {
         return (
           <li key={id} className="listContact">
             <p>
@@ -24,7 +22,7 @@ export default function ContactList() {
               className="listButton"
               type="button"
               id={id}
-              onClick={() => dispatch(deleteContactAction(id))}
+              onClick={() => dispatch(deleteContact(id))}
             >
               Delete
             </button>

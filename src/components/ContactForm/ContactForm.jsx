@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getContacts } from 'redux/contacts/selectors';
-import { addContactAction } from 'redux/contacts/slice';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleChange = event => {
@@ -29,13 +29,23 @@ export default function ContactForm() {
     event.preventDefault();
 
     if (
-      contacts.some(event => event.name === name && event.number === number)
+      contacts.some(
+        event =>
+          event.name.toLowerCase() === name.toLowerCase() &&
+          event.number === number
+      )
     ) {
       alert(`${name}: ${number} is already in contacts!`);
       return;
     }
 
-    dispatch(addContactAction(name, number));
+    dispatch(
+      addContact({
+        name,
+        number,
+      })
+    );
+
     reset();
   };
 
